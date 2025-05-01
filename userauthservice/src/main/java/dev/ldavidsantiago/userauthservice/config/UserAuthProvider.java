@@ -31,6 +31,7 @@ public class UserAuthProvider {
 
     @PostConstruct
     protected void init() {
+        // this is to avoid having the raw secret key available in the JVM
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
@@ -43,7 +44,7 @@ public class UserAuthProvider {
                 .withExpiresAt(validity)
                 .sign(Algorithm.HMAC256(secretKey));
     }
-    public Authentication validateTokenStrongly(String token) {
+    public Authentication validateToken(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         JWTVerifier verifier = JWT.require(algorithm)
