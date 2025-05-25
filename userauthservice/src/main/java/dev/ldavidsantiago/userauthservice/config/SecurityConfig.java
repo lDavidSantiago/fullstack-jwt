@@ -34,9 +34,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 ) //Stateless aplication so no session or cookie will be created
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login", "/register","/messages").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/messages").permitAll() // <--- Agregar este
-//Only endpoints where authentication is not required
+                        .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/messages").hasRole("Administrador")
                         .anyRequest().authenticated()
                 )
                 .build();

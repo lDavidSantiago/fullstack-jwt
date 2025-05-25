@@ -1,11 +1,14 @@
 package dev.ldavidsantiago.userauthservice.entities;
 
 
+import dev.ldavidsantiago.userauthservice.dto.SignUpDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +17,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "app_user")
 public class User {
+    public static User froSignUpDTO(SignUpDto dto) {
+        User user = new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLogin(dto.getLogin());
+        user.setPassword(Arrays.toString(dto.getPassword()));
+        user.setRole(dto.getRole());
+        return user;
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +42,12 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Role role;
+
+    public enum Role {
+        Cliente, Administrador, Repartidor
+    }
 }
